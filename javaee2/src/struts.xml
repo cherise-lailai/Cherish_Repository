@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE struts PUBLIC
+	"-//Apache Software Foundation//DTD Struts Configuration 2.3//EN"
+	"http://struts.apache.org/dtds/struts-2.3.dtd">
+
+<struts>
+
+	<package name="default" namespace="/" extends="struts-default">
+		<interceptors>
+			
+			<interceptor-stack name="fileUploadStack">
+				<interceptor-ref name="defaultStack">
+					<param name="fileUpload.maximumSize">2097152</param>  <!-- 2M -->
+					<param name="fileUpload.allowedTypes">image/x-png,image/bmp,image/gif,image/jpeg,image/jpg</param>
+				</interceptor-ref>
+				
+			</interceptor-stack>
+			
+			<!-- 权限拦截器 -->
+			<interceptor name="authority" class="com.lailai.interceptor.LoginInterceptor"></interceptor>
+			<interceptor-stack name="myAuthority">
+				<!-- 加入默认拦截器 -->
+				<interceptor-ref name="defaultStack"/>
+				<!-- 加入权限拦截器 -->
+				<interceptor-ref name="authority"/>
+			</interceptor-stack>
+		</interceptors>
+		
+		<!-- 全局的result -->
+		<global-results>
+			<result name="index">/index.jsp</result>
+		</global-results>
+
+
+
+		<!-- <default-interceptor-ref name="fileUploadStack"></default-interceptor-ref> -->
+
+		<action name="testUpload" class="com.lailai.exam.upload.UploadAction">
+			<result name="success">/success.jsp</result>
+			<result name="input">/upload.jsp</result>
+		</action>
+		<action name="testDownload" class="com.lailai.exam.download.DownLoadAction">
+			<result type="stream">
+				<param name="bufferSize">2048</param>
+			</result>
+		</action>
+
+		<action name="teacher_*" class="com.lailai.controller.TeacherAction"
+			method="{1}">
+			<result name="go_addPage">WEB-INF/pages/teacher/teacher-add.jsp</result>
+			<result name="go_manage" type="dispatcher">WEB-INF/pages/teacher/teacherManage.jsp</result>
+			<result name="redi_all" type="redirectAction">teacher_all</result>
+			<!-- 更新学生，为了能够传智采用session -->
+			<result name="go_addPage" type="redirectAction">page_teacherAdd</result>
+			
+			<!-- 首页点击更多查看所有老师基本信息 -->
+			<result name="allTeacher" type="dispatcher" >WEB-INF/pages/teacher/allTeacher.jsp</result>
+			<result name="redi_allTeacher" type="redirectAction">teacher_getAllTeacher</result>
+			<result name="showTeachTime" type="dispatcher">WEB-INF/pages/teacher/findCT.jsp</result>
+			<!-- 老师查看课程表 -->
+			<result name="showTeachTime">WEB-INF/pages/CT/findCT.jsp</result>
+			<!-- 下载头像操作 -->
+            <result name="download" type="stream">
+               <!-- 允许下载的文件的类型：指定为所有的二进制的文件类型，去tomcat的web.xml里面搜索.exe -->    
+               <param name="contentType">application/octet-stream</param>
+               <!-- 对应的就是Action种的属性，返回流的属性，【其实就是getAttrInputStream()】 -->
+               <param name="inputName">attrInputStream</param>
+               <!-- 下载头，包括：浏览器显示的文件名 -->
+               <param name="contentDisposition">attachment;filename="${fileName}"</param>
+               <!-- 缓冲区大小设置 -->
+               <param name="bufferSize">1024</param>          
+            </result>
+             
+             <!--导出用户信息excel -->
+            <result name="export" type="stream">
+               <!-- 允许下载的文件的类型：指定为所有的二进制的文件类型，去tomcat的web.xml里面搜索.exe -->    
+               <param name="contentType">application/octet-stream</param>
+               <!-- 对应的就是Action种的属性，返回流的属性，【其实就是getExportUserInfo()】 -->
+               <param name="inputName">exportTeacherInfo</param>
+               <!-- 下载头，包括：浏览器显示的文件名 -->
+               <param name="contentDisposition">attachment;filename="${exportFileName}"</param>
+               <!-- 缓冲区大小设置 -->
+               <param name="bufferSize">1024</param>          
+            </result>  
+		</action>
+		
+		<action name="user_*" class="com.lailai.controller.UserAction"
+			method="{1}">
+			<interceptor-ref name="fileUploadStack" />
+			<result name="input" type="dispatcher">WEB-INF/pages/user/user-add.jsp
+			</result>
+			<result name="success">index.jsp</result>
+			<!-- <result name="go_add" type="dispatcher">WEB-INF/pages/user/user-add.jsp
+			</result> -->
+			<!-- 更新学生，为了能够传值采用session -->
+			<result name="go_addPage" type="redirectAction">page_userAdd</result>
+			<result name="go_manage" type="dispatcher">WEB-INF/pages/user/userManage.jsp
+			</result>
+			<result name="redi_all" type="redirectAction">user_all</result>
+			
+         <!--    
+            <result name="redi_add" type="redirectAction">user_add</result> -->
+            <!-- 下载头像操作 -->
+            <result name="download" type="stream">
+               <!-- 允许下载的文件的类型：指定为所有的二进制的文件类型，去tomcat的web.xml里面搜索.exe -->    
+               <param name="contentType">application/octet-stream</param>
+               <!-- 对应的就是Action种的属性，返回流的属性，【其实就是getAttrInputStream()】 -->
+               <param name="inputName">attrInputStream</param>
+               <!-- 下载头，包括：浏览器显示的文件名 -->
+               <param name="contentDisposition">attachment;filename="${fileName}"</param>
+               <!-- 缓冲区大小设置 -->
+               <param name="bufferSize">1024</param>          
+            </result>
+            
+               <!--导出用户信息excel -->
+            <result name="export" type="stream">
+               <!-- 允许下载的文件的类型：指定为所有的二进制的文件类型，去tomcat的web.xml里面搜索.exe -->    
+               <param name="contentType">application/octet-stream</param>
+               <!-- 对应的就是Action种的属性，返回流的属性，【其实就是getExportUserInfo()】 -->
+               <param name="inputName">exportUserInfo</param>
+               <!-- 下载头，包括：浏览器显示的文件名 -->
+               <param name="contentDisposition">attachment;filename="${exportFileName}"</param>
+               <!-- 缓冲区大小设置 -->
+               <param name="bufferSize">1024</param>          
+            </result>
+		</action>
+		<!-- home的Action -->
+		<action name="home_*" class="com.lailai.controller.HomeAction" method="{1}">
+			<result name="go_contentUpdatePage" type="dispatcher">WEB-INF/pages/home/homeManage.jsp</result>
+			<result name="go_home" type="dispatcher">home.jsp</result>
+			<result name="redi_all" type="redirectAction">home_all</result>
+		</action>
+		
+		<!-- class的 Action -->
+		<action name="cla_*" class="com.lailai.controller.ClassAction" method="{1}">
+			<result name="ctAdd" >WEB-INF/pages/class/courseTimeAdd.jsp</result>
+			<result name="all" type="dispatcher">WEB-INF/pages/class/classManage.jsp</result>
+			<interceptor-ref name="myAuthority"/>
+		</action>
+		
+			<!-- Course的 Action -->
+		<action name="course_*" class="com.lailai.controller.CourseAction" method="{1}">
+		
+		</action>
+		
+		<!-- CT的 Action -->
+		<action name="ct_*" class="com.lailai.controller.CTAction" method="{1}">
+			<result name="findCT">WEB-INF/pages/CT/findCT.jsp</result>
+		</action>
+		
+		<!-- page跳转的Action -->
+		<action name="page_*" class="com.lailai.controller.goPage"
+			method="{1}">
+			<result name="index">index.jsp</result>
+			<result name="userAdd" type="dispatcher">WEB-INF/pages/user/user-add.jsp
+			</result>
+			<result name="userManage" type="dispatcher">WEB-INF/pages/user/userManage.jsp
+			</result>
+			<result name="teacherAdd" type="dispatcher">WEB-INF/pages/teacher/teacher-add.jsp
+			</result>
+			
+			<result name="homeManage" type="dispatcher">WEB-INF/pages/home/homeManage.jsp
+			</result>
+			
+			<result name="courseAdd" type="dispatcher">WEB-INF/pages/class/courseTimeAdd.jsp</result>
+			
+			<result name="checkAdd" type="dispatcher">WEB-INF/pages/check/checkAdd.jsp
+			</result>
+			<result name="checkManage" type="dispatcher">WEB-INF/pages/check/checkManage.jsp
+			</result>
+			<result name="findCT" type="dispatcher">WEB-INF/pages/CT/findCT.jsp
+			</result>
+			<result name="changePWD" type="dispatcher">WEB-INF/pages/common/changePWD.jsp
+			</result>
+		</action>
+		
+		<action name="check_*" class="com.lailai.controller.CheckAction" method="{1}">
+			
+			<result name="add" type="dispatcher">WEB-INF/pages/check/checkAdd.jsp</result>
+		</action>
+		
+		<!-- 登入的Action -->
+		<action name="login_*" class="com.lailai.controller.LoginAction" method="{1}">
+			<result name="redi_home" type="redirectAction">page_findCT</result>
+			<result name="change_password">WEB-INF/pages/common/changePWD.jsp</result>
+		</action>
+		
+		
+		
+		<action name="down_*" class="com.lailai.controller.downAction" method="{1}">
+            <!-- 列表展示 -->
+            <result name="list">list.jsp</result>
+            <!-- 下载操作 -->
+            <result name="download" type="stream">
+               <!-- 允许下载的文件的类型：指定为所有的二进制的文件类型，去tomcat的wen.xml里面搜索.exe -->    
+               <param name="contentType">application/octet-stream</param>
+               <!-- 对应的就是Action种的属性，返回流的属性，【其实就是getAttrInputStream()】 -->
+               <param name="inputName">attrInputStream</param>
+               <!-- 下载头，包括：浏览器显示的文件名 -->
+               <param name="contentDisposition">attachment;filename="${downFileName}"</param>
+               <!-- 缓冲区大小设置 -->
+               <param name="bufferSize">1024</param>          
+            </result>
+        </action>
+		
+		
+	</package>
+
+</struts>

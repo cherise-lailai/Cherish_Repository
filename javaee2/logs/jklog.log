@@ -1,0 +1,9 @@
+14:57:05,335  INFO testLogger:12 - 123
+14:57:05,338 DEBUG testLogger:13 - debug
+14:57:52,755  INFO testLogger:12 - 123
+14:57:52,759 DEBUG testLogger:13 - debug
+14:57:52,761 DEBUG testLogger:14 - 我是slf4jlailai
+14:58:44,726  INFO testLogger:14 - 123
+14:58:44,729 DEBUG testLogger:15 - debug
+14:58:44,730 DEBUG testLogger:16 - 我是slf4jlailai
+14:58:44,731 DEBUG testLogger:17 - 我是slf4jjava.util.Random@2ff5659e
