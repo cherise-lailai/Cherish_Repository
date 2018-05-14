@@ -76,10 +76,10 @@ function login(){
 	var url = "<%=path%>/login_myLogin";
 	var args = {"username":username,"password":password,"role":role};
 	$.post(url,args,function(data){	
-		if(data=="true"){
-			alert('欢迎<s:property value="#session.currentPeople.name"/>登入！');
+		if(data!="false"){
+			alert('欢迎'+data+'登入！');
 			window.location.href="<%=path%>/home_all";
-		}else if(data="false"){
+		}else if(data=="false"){
 			alert("登入失败！请再次核对信息！");
 		}
 	},"JSON");
@@ -133,6 +133,13 @@ function exitLogin(){
 
 
 function getAllTeacher(){
+	//切记这里不是null，而是空串
+	var people='${currentPeople}';
+	console.log("log"+people);
+	if(people==""){
+		alert("登入后才能查看更多老师哦！");
+		return ;
+	}
 	window.location.href="<%=path%>/teacher_getAllTeacher";
 }
 </script>

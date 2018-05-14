@@ -133,6 +133,38 @@ function exitLogin(){
 						</ul>
 					</li>
 				</s:if>
+				
+				<s:if test="#session.permission!='merchant'">
+					<li class="admin-parent"><a class="am-cf"
+						data-am-collapse="{target: '#collapse-nav11'}"><i
+							class="am-icon-line-chart" aria-hidden="true"></i> 反馈 <span
+							class="am-icon-angle-right am-fr am-margin-right"></span></a>
+						<ul class="am-list am-collapse admin-sidebar-sub am-in"
+							id="collapse-nav11">
+							<li><a href="<%=path%>/eva_getList" class="am-cf"> 查看反馈</span></a></li>
+						</ul>
+					</li>
+				</s:if>
+				
+				<s:if test="#session.permission=='merchant'||#session.permission=='teacher'">
+					<li class="admin-parent"><a class="am-cf"
+						data-am-collapse="{target: '#collapse-nav12'}"><i
+							class="am-icon-line-chart" aria-hidden="true"></i> 补课 <span
+							class="am-icon-angle-right am-fr am-margin-right"></span></a>
+						<s:if test="#session.permission=='teacher'">
+							<ul class="am-list am-collapse admin-sidebar-sub am-in"
+								id="collapse-nav12">
+								<li><a href="<%=path%>/reStudy_halfMonthReStudy" class="am-cf">安排补课时间</span></a></li>
+							</ul>
+						</s:if>
+						<s:if test="#session.permission=='merchant'">
+							<ul class="am-list am-collapse admin-sidebar-sub am-in"
+								id="collapse-nav12">
+								<li><a href="<%=path%>/reStudy_openReStudy" class="am-cf">管理补课</span></a></li>
+							</ul>
+						</s:if>
+					</li>
+				</s:if>		
 				<s:if test="#session.permission!='merchant'">
 					<li class="admin-parent"><a class="am-cf"
 						data-am-collapse="{target: '#collapse-nav3'}"><span

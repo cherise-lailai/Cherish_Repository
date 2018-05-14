@@ -93,6 +93,7 @@ var checkTime;
 					<tr align="center">
 						<td class="text-success" style="font-size: larger">学生</td>
 						<td class="text-success" style="font-size: larger">状态</td>
+						<td class="text-success" style="font-size: larger">简单反馈</td>
 					</tr>
 				</thead>
 				<tbody id="stuTable">
@@ -183,7 +184,7 @@ $("#cla").change(function(){
 			
 			var selectId="select"+i;
 			var stuId="stu"+i;
-			alert(selectId);
+			var feedbackId="feedback"+i;
 			var stateHtml=
 			 	"<tr align=\"center\">"+
 					"<td><span class=\"text-success\"  id=\""+stuId+"\" >"+data[i].name+"</span></td>"+
@@ -196,6 +197,7 @@ $("#cla").change(function(){
 							"<option value=\"4\">请假</option>"+
 						"</select>"+
 					"</td>"+
+					"<td><input  type=\"text\" style=\"width:250px\" placeholder=\"认真、走神、吃零食、打岔、睡觉等等描述信息\" id=\""+feedbackId+"\" /></td>"+
 				"</tr>";			
   	 		$("#stuTable").append(stateHtml);
   	 	}
@@ -226,16 +228,17 @@ function addCheck(){
 	var cid = $("#cla option:selected").val();
 	var courseName = $("#course option:selected").val();
 	var stuTime= $("#stuTime option:selected").val();
-	alert(cid);
+/* 	alert(cid);
 	alert(courseName);
 	alert(stuTime);
-	alert(checkTime);
+	alert(checkTime); */
 	
 	
 	/* checkRecode对象 */
- 	function checkRecodeObj(stuName,checkState){
+ 	function checkRecodeObj(stuName,checkState,feedback){
        this.stuName=stuName;
        this.checkState=checkState;
+       this.feedback=feedback;
    	}
 	
 	/* 获得所有学生的考勤记录 */
@@ -246,7 +249,9 @@ function addCheck(){
  	for(var i=0;i<stuNum;i++){
 		var selectVal= $('#select'+ i +' option:selected').val();
 		var stuVal=$('#stu'+i).text();
-	    var obj=new checkRecodeObj(stuVal,selectVal);
+		var feedbackStr=$('#feedback'+i).val();
+	/* 	alert(feedbackStr); */
+	    var obj=new checkRecodeObj(stuVal,selectVal,feedbackStr);
 	    objarr.push(obj);
 	   }
      console.log(objarr);
@@ -263,6 +268,7 @@ function addCheck(){
        
 }
 </script>
+
 </body>
 
 </html>

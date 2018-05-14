@@ -33,14 +33,17 @@ import com.lailai.dto.CtDto;
 import com.lailai.dto.checkRecordDto;
 import com.lailai.entity.Check;
 import com.lailai.entity.Coursetime;
+import com.lailai.entity.Evaluation;
 import com.lailai.entity.StuClass;
 import com.lailai.entity.Teacher;
 import com.lailai.entity.User;
 import com.lailai.service.CheckService;
+import com.lailai.service.EvaluationService;
 import com.lailai.service.StudyService;
 import com.lailai.service.TeacherService;
 import com.lailai.service.UserService;
 import com.lailai.service.impl.CheckServiceImpl;
+import com.lailai.service.impl.EvaluationServiceImpl;
 import com.lailai.service.impl.StudyServiceImpl;
 import com.lailai.service.impl.TeacherServiceImpl;
 import com.lailai.service.impl.UserServiceImpl;
@@ -54,7 +57,7 @@ public class CheckAction extends ActionSupport {
 	private StudyService studyService =new StudyServiceImpl();
 	private ClassDao classDao=new ClassDaoImpl();
 	private CheckService checkService=new CheckServiceImpl(); 
-	
+	private EvaluationService evaluationService=new EvaluationServiceImpl();
 	
 	//级联下拉框的公用代码抽取
 	public DetachedCriteria getDC(){
@@ -240,16 +243,26 @@ public class CheckAction extends ActionSupport {
 		checkRecordDto[] crArr = mapper.readValue(checkRecordeJson, checkRecordDto[].class);
 		List<checkRecordDto> asList = Arrays.asList(crArr);
 		List<Check> checkList = new ArrayList<Check>();
+		List<Evaluation> evaluationList = new ArrayList<Evaluation>();
 		for (checkRecordDto crd : asList) {
+			//1、添加考勤
 		    //生成主键
 			String uuidStr = UUID.randomUUID().toString().replace("-", "");
 			String className = classDao.getClassByCid(cid).getNum();
 			int state = Integer.parseInt(crd.getCheckState());
 			Check check = new Check(uuidStr,crd.getStuName(),stuTime,year,className,courseName,teacher.getName(),checkDate,state);
 			checkList.add(check);
+			//2、添加老师反馈信息
+			String uuidStr2 = UUID.randomUUID().toString().replace("-", "");
+			
+		   // public Evaluation(String id, String userName, String courseName, String teacher, Date date) {
+		    Evaluation evaluation = new Evaluation(uuidStr2,crd.getStuName(),courseName,teacher.getName(),checkDate,crd.getFeedback());
+		    evaluationList.add(evaluation);
 		}
 		
-		boolean isOk = checkService.addCheck(checkList);
+		boolean isOk = checkService.addCheck(checkList,evaluationList);
+		//evaluationService.addFeedback(evaluationList);  选择在checkService中调用
+		
 		String resultJson = JsonUtils.objectToJson(isOk);
 		HttpServletResponse response = ServletActionContext.getResponse();
 		response.setContentType("text/html;charset=utf-8");

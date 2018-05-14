@@ -56,6 +56,9 @@
 		<mapping resource="com/lailai/entity/Content.hbm.xml" />
 		<mapping resource="com/lailai/entity/Merchant.hbm.xml" />
 		<mapping resource="com/lailai/entity/Course.hbm.xml" />  
+		<mapping resource="com/lailai/entity/Evaluation.hbm.xml" />  
+		<mapping resource="com/lailai/entity/ReStudy.hbm.xml" />  
+		<mapping resource="com/lailai/entity/ReStuCourse.hbm.xml" />  
 	</session-factory>
 
 </hibernate-configuration>

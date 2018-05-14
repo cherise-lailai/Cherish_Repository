@@ -78,7 +78,7 @@ public class TeacherAction extends ActionSupport{
 		}
 		File file = new File(realpath + "/" + headImageFileName);
 		//文件为空，则使用默认图片	
-		if(headImage==null&&tid==null){
+		if(headImage==null&&"".equals(tid)){
 			headImageFileName="default.jpg";
 		}
 		//文件不为空，做上传
@@ -124,10 +124,9 @@ public class TeacherAction extends ActionSupport{
 		String goodStr = goodSB.toString();
 		
 		//修改用户没有修改图片
-		if(tid!=null&&headImage==null){
+		if(!"".equals(tid)&&headImage==null){
 			Teacher teacher = teacherService.findBytid(tid);
 			String[] split = teacher.getImgPath().split("/");
-		
 			headImageFileName=split[split.length-1];			
 		}
 		

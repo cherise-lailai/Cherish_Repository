@@ -2,9 +2,11 @@ package com.lailai.dao.impl;
 
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,6 +45,15 @@ public class CheckDaoImpl implements CheckDao{
 			}
 		}
 		return true;
+	}
+	@Override
+	public List<Check> findNeedReStuUser(DetachedCriteria dc2) {
+		Session currentSession = HibernateUtils.getCurrentSession();
+		Transaction ts = currentSession.beginTransaction();
+		Criteria c = dc2.getExecutableCriteria(currentSession);
+		List<Check>  list = (List<Check>)c.list();
+		ts.commit();
+		return list;
 	}
 
 }

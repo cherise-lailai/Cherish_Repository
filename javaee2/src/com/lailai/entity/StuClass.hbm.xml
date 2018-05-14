@@ -23,7 +23,7 @@
             <column name="state" not-null="true" />
         </property>
         <!-- 在一对多的一的一方放弃维护外键关系 inverse="true"  cascade="save-update"， 并且配置级联更新 -->
-        <set name="coursetimes" cascade="save-update" inverse="true"  >
+        <set name="coursetimes" cascade="save-update" inverse="true"  lazy="false">
             <key>
                 <column name="classid" length="60"  />
             </key>

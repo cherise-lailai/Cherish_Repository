@@ -2,40 +2,50 @@ package com.lailai.controller;
 
 import com.opensymphony.xwork2.ActionSupport;
 
-public class goPage extends ActionSupport{
-	public String index(){
-		
+public class goPage extends ActionSupport {
+	public String index() {
+
 		return "index";
 	}
-	public String userAdd(){
+
+	public String userAdd() {
 		return "userAdd";
 	}
-	public String teacherAdd(){
+
+	public String teacherAdd() {
 		return "teacherAdd";
 	}
-	public String userManage(){
-		return "userManage";	
+
+	public String userManage() {
+		return "userManage";
 	}
-	
-	public String checkAdd(){
+
+	public String checkAdd() {
 		return "checkAdd";
 	}
-	public String checkManage(){
+
+	public String checkManage() {
 		return "checkManage";
 	}
-	
-	public String findCT(){
-		return "findCT";	
+
+	public String findCT() {
+		return "findCT";
 	}
-	public String changePWD(){
-		return "changePWD";	
+
+	public String changePWD() {
+		return "changePWD";
 	}
-	public String homeManage(){
+
+	public String homeManage() {
 		return "homeManage";
 	}
-	
-	public String courseTimeAdd(){
+
+	public String courseTimeAdd() {
 		return "courseAdd";
 	}
-	
+
+	public String openReStuCourse() {
+		return "openReCourse";
+	}
+
 }

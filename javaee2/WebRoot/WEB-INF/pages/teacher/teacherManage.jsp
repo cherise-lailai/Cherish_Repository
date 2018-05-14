@@ -51,14 +51,14 @@
 					<div class="card-box">
 						<div class="am-g am-panel" style="background-color: gainsboro">
 							<div class="am-u-sm-2">
-								<h2 style="float: left; display: block">年度:</h2>
+								<h2 style="float: left; display: block">--------</h2>
 								&nbsp;&nbsp;&nbsp;
-								<h2 class="text-success" style="float: left">2015</h2>
+								<h2 class="text-success" style="float: left"></h2>
 							</div>
 							<div class="am-u-sm-2">
-								<h2 style="float: left; display: block">班级:</h2>
+								<h2 style="float: left; display: block">--------</h2>
 								&nbsp;&nbsp;&nbsp;
-								<h2 class="text-success" style="float: left">3</h2>
+								<h2 class="text-success" style="float: left"></h2>
 							</div>
 						</div>
 						<!-- Row start -->

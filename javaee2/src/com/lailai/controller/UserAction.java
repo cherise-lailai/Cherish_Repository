@@ -295,7 +295,7 @@ public class UserAction extends ActionSupport {
 		}
 		File file = new File(realpath + "/" + headImageFileName);
 		//文件为空，则使用默认图片	
-		if(headImage==null&&uid==null){
+		if(headImage==null&&"".equals(uid)){
 			headImageFileName="default.jpg";
 		}
 		//文件不为空，做上传
@@ -330,7 +330,7 @@ public class UserAction extends ActionSupport {
 		}
 		
 		//修改用户没有修改图片
-		if(uid!=null&&headImage==null){
+		if(!"".equals(uid)&&headImage==null){
 			User u = userService.findByUid(uid);
 			String[] split = u.getImgPath().split("/");
 			headImageFileName=split[split.length-1];			
@@ -339,7 +339,7 @@ public class UserAction extends ActionSupport {
 		userService.addUser(user);
 		logger.info("文件{}上传没有出现异常", realpath);
 		valueStack.set("userAddInfo", "用户添加成功");
-		return "go_addPage";
+		return "redi_all";
 	}
 	//导出用户信息
 	public String exportUserInfo(){

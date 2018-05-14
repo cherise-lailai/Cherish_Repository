@@ -7,6 +7,11 @@ import org.hibernate.criterion.DetachedCriteria;
 import com.lailai.entity.Course;
 
 public interface CourseDao {
+	/**
+	 * 根据课程状态查询课程列表
+	 * @param state
+	 * @return
+	 */
 	public List<Course> getAllCourse(int state);
 
 	/**

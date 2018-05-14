@@ -148,6 +148,15 @@
 			<result name="findCT">WEB-INF/pages/CT/findCT.jsp</result>
 		</action>
 		
+		<action name="eva_*" class="com.lailai.controller.EvaluationAction" method="{1}">
+			<result name="EvaManage">WEB-INF/pages/evaluation/evaluationManage.jsp</result>
+		</action>
+		<action name="reStudy_*" class="com.lailai.controller.ReStudyAction" method="{1}">
+			<result name="reStudyAdd" >WEB-INF/pages/ReStudy/reStudyAdd.jsp</result>
+			<result name="reStudyAddByTea">WEB-INF/pages/ReStudy/reStudyAddByTea.jsp</result>
+			<result name="redir_openReStudy" type="redirectAction">reStudy_openReStudy</result>
+		</action>
+		
 		<!-- page跳转的Action -->
 		<action name="page_*" class="com.lailai.controller.goPage"
 			method="{1}">
@@ -172,6 +181,7 @@
 			</result>
 			<result name="changePWD" type="dispatcher">WEB-INF/pages/common/changePWD.jsp
 			</result>
+			<result name="openReCourse">WEB-INF/pages/ReStudy/reStudyAdd.jsp</result>
 		</action>
 		
 		<action name="check_*" class="com.lailai.controller.CheckAction" method="{1}">

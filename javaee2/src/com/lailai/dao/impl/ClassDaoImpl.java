@@ -39,6 +39,8 @@ public class ClassDaoImpl implements ClassDao {
 		Session session = HibernateUtils.openSession();
 		Criteria c = dc.getExecutableCriteria(session);
 		List<StuClass> stuClassList =(List<StuClass>)c.list();
+		//TODO   测试时标记代码位置，我未完成的东西  这里配置了懒加载为false，所以可以关闭
+		session.close();
 		return stuClassList;
 	}
 
@@ -47,6 +49,8 @@ public class ClassDaoImpl implements ClassDao {
 		Session session = HibernateUtils.openSession();
 		StuClass stuClass = session.get(StuClass.class, cid);
 /*		session.close();  好像是懒加载，后面需要级联保存，不能把session管关了，不懂能够可以使用currentSession进行代替*/  
+		//将懒加载关闭了，可以关闭session
+		session.close();
 		return stuClass;
 	}
 

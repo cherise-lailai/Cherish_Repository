@@ -4,4 +4,19 @@
 <hibernate-reverse-engineering>
 	<table name="class" catalog="javaee2" class="StuClass"></table>
 	<table name="check" catalog="javaee2" class="Check"></table>
+	<table name="evaluation" catalog="javaee2" class="Evaluation">
+		<primary-key>
+			<generator class="assigned"></generator>
+		</primary-key>
+	</table>
+	<table name="restucourse" catalog="javaee2" class="ReStuCourse">
+		<primary-key>
+			<generator class="assigned"></generator>
+		</primary-key>
+	</table>
+<table name="restudy" catalog="javaee2" class="ReStudy">
+	<primary-key>
+		<generator class="assigned"></generator>
+	</primary-key>
+</table>
 </hibernate-reverse-engineering>
