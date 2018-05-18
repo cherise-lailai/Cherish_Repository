@@ -20,10 +20,33 @@
 <link rel="stylesheet" href="<%=path%>/assets/css/page/typography.css" />
 <link rel="stylesheet" href="<%=path%>/assets/css/page/form.css" />
 <link rel="stylesheet" href="<%=path%>/assets/css/component.css" />
+<script type="text/javascript" src="<%=path%>/assets/js/jquery-2.1.0.js"></script>
 </head>
 <body>
 	<script type="text/javascript">
-		</script>
+	//页面加载判断当前用户是否是学生，如果是学生则给出学生的最近一周的反馈
+	$(function(){
+		var role='<s:property value="#session.permission" />'
+		//是学生
+		if(role=="user"){
+			var url = "<%=path%>/eva_getListOneWeek";
+			var args=null;
+			$.post(url,args,function(data){
+				var detailHtml="";
+				for(var i=0;i<data.length;i++){
+			   		detailHtml+=
+			   		"<tr><td><span>"+data[i].courseName+"</span></td>"+
+			   		"<td><span>"+data[i].teacher+"</span></td>"+
+			   		"<td><span>"+new Date(data[i].date).getDate()+"号</span></td>"+
+					"<td><span>"+data[i].feedback+"</span></td></tr>"; 
+	   			}
+	  			$("#datailTable").html(detailHtml);
+	  			$("#feedbackModal").modal();
+			},"JSON");
+		}
+	});
+	
+	</script>
 	<!-- Begin page -->
 	<header class="am-topbar am-topbar-fixed-top">
 		<div class="contain" style="background-color: #f8f8f8">
@@ -92,6 +115,31 @@
 			</table>	
 		</div>
 		
+	<!-- 反馈信息提示模态框 -->
+	<div class="am-modal am-modal-alert" tabindex="-1" id="feedbackModal">
+	  <div class="am-modal-dialog">
+	    <div class="am-modal-hd am-text-success">温馨提示</div>
+	    <div class="am-modal-bd">
+			<span class="am-text-primary">在最近一周内，您的任课老师对您的反馈如下所示</span>
+			<table class="am-table" >
+			 	<thead>
+			        <tr>
+			            <th align="center">课程</th>
+			            <th align="center">老师</th>
+			            <th align="center">日期</th>
+			            <th align="center">反馈</th>
+			        </tr>
+			    </thead>
+			    <tbody id="datailTable">
+
+			 	</tbody>
+			</table>
+	    </div>
+	    <div class="am-modal-footer">
+	      <button class="am-modal-btn">关闭</button>
+	    </div>
+	  </div>
+	</div>
 
 	<!-- navbar -->
 	<a href="admin-offcanvas"
@@ -99,8 +147,6 @@
 		data-am-offcanvas="{target: '#admin-offcanvas'}"> <!--<i class="fa fa-bars" aria-hidden="true"></i>-->
 	</a>
 
-	<script type="text/javascript"
-		src="<%=path%>/assets/js/jquery-2.1.0.js"></script>
 	<script type="text/javascript" src="<%=path%>/assets/js/amazeui.min.js"></script>
 	<script type="text/javascript" src="<%=path%>/assets/js/app.js"></script>
 	<script type="text/javascript" src="<%=path%>/assets/js/blockUI.js"></script>

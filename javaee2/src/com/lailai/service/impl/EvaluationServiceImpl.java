@@ -3,6 +3,8 @@ package com.lailai.service.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.lailai.dao.EvaluationDao;
 import com.lailai.dao.impl.EvaluationDaoImpl;
 import com.lailai.entity.Evaluation;
@@ -31,4 +33,11 @@ public class EvaluationServiceImpl implements EvaluationService {
 		}
 		return evaList;
 	}
+
+	@Override
+	public List<Evaluation> getListOneWeek(DetachedCriteria dc) {
+		return evaluationDao.getOneWeek(dc);
+	}
+
+	
 }

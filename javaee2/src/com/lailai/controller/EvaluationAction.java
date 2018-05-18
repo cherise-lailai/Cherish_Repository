@@ -1,11 +1,20 @@
 package com.lailai.controller;
 
+import java.io.IOException;
+import java.io.PrintWriter;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.logging.SimpleFormatter;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.struts2.ServletActionContext;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
 import com.lailai.common.enums.Permission;
 import com.lailai.entity.Evaluation;
@@ -14,6 +23,7 @@ import com.lailai.entity.Teacher;
 import com.lailai.entity.User;
 import com.lailai.service.EvaluationService;
 import com.lailai.service.impl.EvaluationServiceImpl;
+import com.lailai.util.JsonUtils;
 import com.opensymphony.xwork2.ActionContext;
 import com.opensymphony.xwork2.ActionSupport;
 
@@ -92,6 +102,43 @@ public class EvaluationAction extends ActionSupport {
 			//context.put(key, value);
 		}
 		return "EvaManage";
+	}
+	
+	/**
+	 * 只有当前学生才能够访问的方法
+	 */
+	public void getListOneWeek(){
+		ActionContext context = ActionContext.getContext();
+		DetachedCriteria dc = DetachedCriteria.forClass(Evaluation.class);
+		
+		List<Evaluation> listOneWeek=null;
+
+		Map<String, Object> sessionMap = context.getSession();
+		String permission = (String)sessionMap.get("permission");
+		if(Permission.USER.getRole().equals(permission)){
+			User user = (User) sessionMap.get("currentPeople");
+			String userName = user.getName();
+			dc.add(Restrictions.eq("userName", userName));
+			Calendar c = Calendar.getInstance();
+			Date endDate = c.getTime();
+			c.add(Calendar.DATE, -7);// 日期减1  
+			Date beginDate = c.getTime();
+			
+			dc.add(Restrictions.between("date", beginDate, endDate));
+			listOneWeek = evaluationService.getListOneWeek(dc);
+		}
+		context.put("listOneWeek", listOneWeek);
+		String resultJson = JsonUtils.objectToJson(listOneWeek);
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html;charset=utf-8");
+		try {
+			PrintWriter writer = response.getWriter();
+			writer.write(resultJson);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 
 }

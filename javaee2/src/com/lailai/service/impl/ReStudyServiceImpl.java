@@ -45,7 +45,8 @@ public class ReStudyServiceImpl implements ReStudyService{
 			c.set(Calendar.DAY_OF_MONTH, 16);
 			beginTime = c.getTime();
 			System.out.println(beginTime);
-			c.set(Calendar.DAY_OF_MONTH, 0);
+			c.set(Calendar.DAY_OF_MONTH, 1);
+			c.roll(Calendar.DATE, -1);
 			endTime = c.getTime();
 			System.out.println(endTime);
 		}
@@ -100,7 +101,8 @@ public class ReStudyServiceImpl implements ReStudyService{
 				cal.set(Calendar.DAY_OF_MONTH, 16);
 				beginTime = cal.getTime();
 				System.out.println(beginTime);
-				cal.set(Calendar.DAY_OF_MONTH, 0);
+				cal.set(Calendar.DATE, 1); 
+				cal.roll(Calendar.DATE, -1);
 				endTime = cal.getTime();
 				System.out.println(endTime);
 			}

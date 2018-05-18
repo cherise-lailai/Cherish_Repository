@@ -3,6 +3,8 @@ package com.lailai.dao;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.lailai.entity.Evaluation;
 
 public interface EvaluationDao {
@@ -28,5 +30,11 @@ public interface EvaluationDao {
 	 */
 	
 	public abstract List<Evaluation>  getListByUser(Date beginTime,Date endTime,Evaluation evaluation);
+
+	/**
+	 * 查询一周的反馈信息
+	 * @return
+	 */
+	public abstract List<Evaluation> getOneWeek(DetachedCriteria dc);
 
 }

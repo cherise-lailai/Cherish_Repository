@@ -3,10 +3,12 @@ package com.lailai.dao.impl;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.Criteria;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.hibernate.criterion.DetachedCriteria;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -78,6 +80,15 @@ public class EvaluationDaoImpl implements EvaluationDao {
 		query.setParameter("beginTime", beginTime);
 		query.setParameter("endTime", endTime);
 		List<Evaluation> list =(List<Evaluation>) query.list();
+		ts.commit();
+		return list;
+	}
+	@Override
+	public List<Evaluation> getOneWeek(DetachedCriteria dc) {
+		Session currentSession = HibernateUtils.getCurrentSession();
+		Transaction ts = currentSession.beginTransaction();
+		Criteria c = dc.getExecutableCriteria(currentSession);
+		List<Evaluation> list =(List<Evaluation>) c.list();
 		ts.commit();
 		return list;
 	}

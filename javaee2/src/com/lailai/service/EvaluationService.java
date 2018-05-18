@@ -3,6 +3,8 @@ package com.lailai.service;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.criterion.DetachedCriteria;
+
 import com.lailai.entity.Evaluation;
 
 public interface EvaluationService {
@@ -21,4 +23,10 @@ public interface EvaluationService {
 	 * @return
 	 */
 	public abstract List<Evaluation> getListBetweenTime(Date bDate,Date eDate,Evaluation e);
+	/**
+	 * 获得学生一周的反馈记录
+	 * @return
+	 */
+	public abstract List<Evaluation> getListOneWeek(DetachedCriteria dc);
+
 }
