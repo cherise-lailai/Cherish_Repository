@@ -53,4 +53,11 @@ public interface ReStuCourseDao {
 	 * @param periodStr
 	 */
 	public abstract boolean deleteUserByreStuCouId(String reStuCourseId);
+
+	/**
+	 * 查询出上半个月需要开的补课
+	 * @param dc
+	 * @return
+	 */
+	public abstract List<ReStuCourse> getAllPreHalfMonth(DetachedCriteria dc);
 }

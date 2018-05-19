@@ -1,12 +1,15 @@
 package com.lailai.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.criterion.DetachedCriteria;
 
 import com.lailai.common.enums.ReStudyCourse;
+import com.lailai.dto.ReStuNoticeDto;
 import com.lailai.entity.ReStuCourse;
 import com.lailai.entity.ReStudy;
+import com.lailai.entity.User;
 
 public interface ReStudyService {
 	/**
@@ -50,6 +53,11 @@ public interface ReStudyService {
 	 * @return
 	 */
 	public abstract List<ReStuCourse> getAleadyopen(String periodStr2);
+	/**
+	 * 查询当前用户在上半个月的补课记录
+	 * @return
+	 */
+	public abstract ArrayList<ReStuNoticeDto> getReStuPreHalfMonth(User user);
 	
 
 

@@ -30,4 +30,14 @@ public interface ReStudyDao {
 
 	public String findIdByCourseName(DetachedCriteria dc);
 
+
+	/**
+	 * 根据离线条件查询ReStu表
+	 * @param dc2
+	 * @return
+	 */
+	public List<ReStudy> findUserNeedReStu(DetachedCriteria dc2);
+
+
+
 }

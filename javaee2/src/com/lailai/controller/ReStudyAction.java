@@ -16,10 +16,13 @@ import org.apache.struts2.ServletActionContext;
 import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
+import com.lailai.common.enums.Permission;
 import com.lailai.common.enums.ReStudyCourse;
+import com.lailai.dto.ReStuNoticeDto;
 import com.lailai.entity.Check;
 import com.lailai.entity.ReStuCourse;
 import com.lailai.entity.Teacher;
+import com.lailai.entity.User;
 import com.lailai.service.ReStudyService;
 import com.lailai.service.impl.ReStudyServiceImpl;
 import com.lailai.util.JsonUtils;
@@ -234,6 +237,33 @@ public class ReStudyAction extends ActionSupport{
 			context.put("havaTimeList", havaTimeList);
 		}
 		return "reStudyAddByTea";
+	}
+	
+	//获得当前用户的上半个月的补课记录
+	public void getReStuPreHalfMonth(){
+		ActionContext context = ActionContext.getContext();
+		Map<String, Object> sessionMap = context.getSession();
+		String permission = (String) sessionMap.get("permission");
+		User user=null;
+		if(Permission.USER.getRole().equals(permission)){
+			user = (User)sessionMap.get("currentPeople");
+		}
+		
+		ArrayList<ReStuNoticeDto> ReStuNoticeList=null;
+		if(Permission.USER.getRole().equals(permission)){
+			ReStuNoticeList=reStudyService.getReStuPreHalfMonth(user);
+		}
+		String resultJson = JsonUtils.objectToJson(ReStuNoticeList);
+		HttpServletResponse response = ServletActionContext.getResponse();
+		response.setContentType("text/html;charset=utf-8");
+		try {
+			PrintWriter writer = response.getWriter();
+			writer.write(resultJson);
+			writer.flush();
+			writer.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}	
 	}
 	
 }

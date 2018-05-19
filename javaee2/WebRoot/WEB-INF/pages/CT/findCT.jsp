@@ -45,7 +45,29 @@
 			},"JSON");
 		}
 	});
-	
+		
+	$(function(){
+		var role='<s:property value="#session.permission" />'
+		//是学生
+		if(role=="user"){
+				var url = "<%=path%>/reStudy_getReStuPreHalfMonth";
+				var args=null;
+				$.post(url,args,function(data){
+					var detailHtml2="";
+					if(data.length!=0){
+						for(var i=0;i<data.length;i++){
+				   			 detailHtml2+=
+					   		"<tr><td><span>"+data[i].course+"</span></td>"+
+					   		"<td><span>"+data[i].teacher+"</span></td>"+
+					   		"<td><span>"+data[i].reStuNotice+"</span></td>"+
+							"<td><span>"+data[i].reStuNum+"</span></td></tr>";
+			  			}
+			 			$("#reStuDatailTable2").html(detailHtml2);
+			 			/* $("#reStuModal").modal(); */
+					}
+				},"JSON");
+			}
+	}); 
 	</script>
 	<!-- Begin page -->
 	<header class="am-topbar am-topbar-fixed-top">
@@ -131,6 +153,46 @@
 			        </tr>
 			    </thead>
 			    <tbody id="datailTable">
+
+			 	</tbody>
+			</table>
+			<span class="am-text-primary">补课安排</span>
+			<table class="am-table" >
+			 	<thead>
+			        <tr>
+			            <th align="center">课程</th>
+			            <th align="center">老师</th>
+			            <th align="center">通知</th>
+			            <th align="center">节数</th>
+			        </tr>
+			    </thead>
+			    <tbody id="reStuDatailTable2">
+
+			 	</tbody>
+			</table>
+	    </div>
+	    <div class="am-modal-footer">
+	      <button class="am-modal-btn">关闭</button>
+	    </div>
+	  </div>
+	</div>
+
+	<!-- 补课信息提示模态框 -->
+	<div class="am-modal am-modal-alert" style="margin-right: 10px" tabindex="-1" id="reStuModal">
+	  <div class="am-modal-dialog">
+	    <div class="am-modal-hd am-text-success">温馨提示</div>
+	    <div class="am-modal-bd">
+			<span class="am-text-primary">补课安排</span>
+			<table class="am-table" >
+			 	<thead>
+			        <tr>
+			            <th align="center">课程</th>
+			            <th align="center">老师</th>
+			            <th align="center">通知</th>
+			            <th align="center">节数</th>
+			        </tr>
+			    </thead>
+			    <tbody id="reStuDatailTable">
 
 			 	</tbody>
 			</table>

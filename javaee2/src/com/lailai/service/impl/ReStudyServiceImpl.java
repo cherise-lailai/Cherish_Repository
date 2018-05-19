@@ -1,5 +1,6 @@
 package com.lailai.service.impl;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -11,14 +12,17 @@ import org.hibernate.criterion.DetachedCriteria;
 import org.hibernate.criterion.Restrictions;
 
 import com.lailai.common.enums.CheckStateEnum;
+import com.lailai.common.enums.Permission;
 import com.lailai.common.enums.ReStudyCourse;
 import com.lailai.dao.ReStuCourseDao;
 import com.lailai.dao.ReStudyDao;
 import com.lailai.dao.impl.ReStuCourseDaoImpl;
 import com.lailai.dao.impl.ReStudyDaoImpl;
+import com.lailai.dto.ReStuNoticeDto;
 import com.lailai.entity.Check;
 import com.lailai.entity.ReStuCourse;
 import com.lailai.entity.ReStudy;
+import com.lailai.entity.User;
 import com.lailai.service.CheckService;
 import com.lailai.service.ReStudyService;
 
@@ -201,6 +205,60 @@ public class ReStudyServiceImpl implements ReStudyService{
 	@Override
 	public List<ReStuCourse> getAleadyopen(String periodStr) {
 		return 	reStuCourseDao.getAll(periodStr);
+	}
+
+	@Override
+	public ArrayList<ReStuNoticeDto> getReStuPreHalfMonth(User user) {
+		//查找出上半个月的补课列表
+		Calendar calen = Calendar.getInstance();
+		int month2 =calen.get(Calendar.MONDAY)+1;
+		int dayIndex2 =calen.get(Calendar.DAY_OF_MONTH);
+		String periodStr2=""+month2+"月的";
+		if(dayIndex2>0&&dayIndex2<16){
+			periodStr2+="上半月";
+		}else{
+			periodStr2+="下半月";
+		}
+		String findStr="";
+		
+		if(("1月的上半月").equals(periodStr2)){
+			return null;
+		}
+		if((month2+"月的下半月").equals(periodStr2)){
+			findStr=(month2)+"月的上半月";
+		}
+		if((month2+"月的上半月").equals(periodStr2)){
+			findStr=(month2-1)+"月的下半月";
+		}
+
+		DetachedCriteria dc = DetachedCriteria.forClass(ReStuCourse.class);
+		dc.add(Restrictions.eq("state",new Integer(ReStudyCourse.teacherOK.state)));
+		dc.add(Restrictions.eq("period",findStr ));
+		List<ReStuCourse> ReStuList=reStuCourseDao.getAllPreHalfMonth(dc);
+		ArrayList<ReStuNoticeDto> reStudyList = new ArrayList<ReStuNoticeDto>();
+		
+		if(ReStuList.size()>0){
+			for (ReStuCourse reStuCourse : ReStuList) {
+				String reStuid = reStuCourse.getId();
+				DetachedCriteria dc2 = DetachedCriteria.forClass(ReStudy.class);
+				dc2.add(Restrictions.eq("restucourseid",reStuid ));
+				dc2.add(Restrictions.eq("userName", user.getName()));
+				List<ReStudy>list= reStudyDao.findUserNeedReStu(dc2);
+				if(list.size()>0){
+					for (ReStudy reStudy : list) {
+						ReStuNoticeDto reStuNoticeDto = new ReStuNoticeDto();
+						//补课课程的老师
+						reStuNoticeDto.setTeacher(reStuCourse.getTeacher());
+						reStuNoticeDto.setCourse(reStuCourse.getCourseName());
+						reStuNoticeDto.setReStuNotice(reStuCourse.getStudyTime());
+						//学生补该课程的节数
+						reStuNoticeDto.setReStuNum(reStudy.getNum());
+						reStudyList.add(reStuNoticeDto);
+					}
+				}
+			}
+		}
+		return reStudyList;
 	}
 
 

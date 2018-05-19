@@ -52,6 +52,16 @@ public class ReStudyDaoImpl implements ReStudyDao{
 		ts.commit();
 		return reStudyCourseId;
 	}
+
+	@Override
+	public List<ReStudy> findUserNeedReStu(DetachedCriteria dc2) {
+		Session currentSession = HibernateUtils.getCurrentSession();
+		Transaction ts = currentSession.beginTransaction();
+		Criteria c = dc2.getExecutableCriteria(currentSession);
+		List<ReStudy> list = (List<ReStudy>)c.list();
+		ts.commit();
+		return list;
+	}
 	
 
 }

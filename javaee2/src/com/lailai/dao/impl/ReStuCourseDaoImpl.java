@@ -92,4 +92,15 @@ public class ReStuCourseDaoImpl implements ReStuCourseDao{
 		ts.commit();
 		return true;
 	}
+
+	@Override
+	public List<ReStuCourse> getAllPreHalfMonth(DetachedCriteria dc) {
+		Session currentSession = HibernateUtils.getCurrentSession();
+		Transaction ts = currentSession.beginTransaction();
+		Criteria c = dc.getExecutableCriteria(currentSession);
+		List<ReStuCourse> list =(List<ReStuCourse>)c.list();
+		ts.commit();
+		return list;
+		
+	}
 }
